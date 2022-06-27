@@ -13,34 +13,17 @@ type TState = {
   isError: boolean;
   page: number;
   pageSize: number;
-  info: null | Character;
+  charter: null | Character;
   show: boolean;
 }
 export default class Characters extends React.Component<TProps, TState>{
-  state = {
+  state: TState = {
     characters: [],
     isLoading: false,
     isError: false,
     page: 1,
     pageSize: 5,
-    info: {
-      aliases: ['Lamprey'],
-      allegiances: ['https://www.anapioficeandfire.com/api/houses/15'],
-      books: ['https://www.anapioficeandfire.com/api/books/3'],
-      born: "",
-      culture: "",
-      died: "",
-      father: "",
-      gender: "Male",
-      mother: "",
-      name: "",
-      playedBy: [''],
-      povBooks: [],
-      spouse: "",
-      titles: [''],
-      tvSeries: [''],
-      url: "https://www.anapioficeandfire.com/api/characters/3",
-    },
+    charter: null,
     show: false
   }
 
@@ -78,10 +61,10 @@ export default class Characters extends React.Component<TProps, TState>{
   handlerClickCharacter = (url: string) => {
     IceandfireApi.getCharterInfo(url)
       .then((res: Character) => {
-        console.log("Oтвет типа: " + typeof res)
-        console.log("Ответ: "+ res)
+        console.log("Oтвет типа: ", typeof res)
+        console.log("Ответ: ", res)
       // console.log("Ответ: "+ JSON.parse(JSON.stringify(res)))
-        this.setState({ info: res, isLoading: false })
+        this.setState({ charter: res, isLoading: false })
       })
     this.handleShow()
   }
@@ -95,7 +78,9 @@ export default class Characters extends React.Component<TProps, TState>{
   }
 
   render() {
-    const { characters, isLoading, isError } = this.state;
+
+    const { characters, charter, isLoading, isError } = this.state;
+    console.log(charter)
     return (
 
       <div className="characters">
@@ -111,25 +96,6 @@ export default class Characters extends React.Component<TProps, TState>{
                   <span className="title">{el.name || el.aliases}</span>
                   <span>Gender: {el.gender}</span>
                 </ListGroup.Item>
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Modal</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    {this.state.info && this.state.info.gender}
-                    {/* <span className="title">Aliases: </span>{`${el.aliases}`}
-                    <br></br>
-                    <span className="title">Gender: </span>{`${el.gender}`} */}
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
-                      Close
-                    </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                      Save Changes
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
               </>
             ))
           }
@@ -150,6 +116,25 @@ export default class Characters extends React.Component<TProps, TState>{
             </Button>
           </ButtonGroup>
         )}
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{charter?.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {charter && charter.gender}
+            {/* <span className="title">Aliases: </span>{`${el.aliases}`}
+                    <br></br>
+                    <span className="title">Gender: </span>{`${el.gender}`} */}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }
