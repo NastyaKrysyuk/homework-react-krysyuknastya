@@ -54,8 +54,7 @@ export default class Characters extends React.Component<TProps, TState>{
 
   componentDidUpdate() {
     console.log("componentDidUpdate");
-    // if (this.state.characters.length == 0 && this.state.isLoading == false) {
-    if (this.state.characters.length == 0 && !this.state.isLoading) {
+    if (this.state.characters.length == 0 && this.state.isLoading == false) {
       this.setState({ ...this.state, page: 1 })
       this.getCharcters();
     }
@@ -69,18 +68,18 @@ export default class Characters extends React.Component<TProps, TState>{
       // console.log("Ответ: "+ JSON.parse(JSON.stringify(res)))
         this.setState({ charter: res, isLoading: false })
       })
-    this.handleModal(true)()
+    this.handleShow()
   }
 
-  handleModal = (type: boolean) => () => {
-    this.setState({ show: type })
+  handleClose = () => {
+    this.setState({ show: false })
   }
 
+  handleShow = () => {
+    this.setState({ show: true })
+  }
 
   render() {
-    const { characters, charter, isLoading, isError } = this.state;
-    console.log(charter)
-
     const { characters, charter, isLoading, isError } = this.state;
     console.log(charter)
     return (
@@ -118,66 +117,14 @@ export default class Characters extends React.Component<TProps, TState>{
             </Button>
           </ButtonGroup>
         )}
-        <Modal show={this.state.show} onHide={this.handleModal(false)}>
+        <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{charter?.name || "undefinde"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {/*<span className="title">Name:</span>{charter?.name || "undefinde"}*/}
-            {charter?.name && (
-                <>
-                  <span className="title">Name:</span>{charter?.name}
-                </>
-            )}
-
-            {/*{charter?.name && (*/}
-            {/*    <div>*/}
-            {/*      <small>Name:</small>*/}
-            {/*      <span>{charter?.name}</span>*/}
-            {/*    </div>*/}
-            {/*)}*/}
-
+            <span className="title">Name:</span>{charter?.name || "undefinde"}
             <span className="prop">Gender:</span>{charter?.gender || "undefinde" }
             <span className="prop">Aliases:</span>{charter?.aliases || "undefinde"}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleModal(false)}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={this.handleModal(true)}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-              </>
-            ))
-          }
-        </ListGroup>
-        {characters && !isError && (
-          <ButtonGroup className="books-nav" aria-label="Basic example" >
-            <Button
-              variant="secondary"
-              disabled={this.state.page === 1}
-              onClick={(_e: any) => this.handlerPage("left")}
-            >
-              left
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={(_e: any) => this.handlerPage("right")}>
-              right
-            </Button>
-          </ButtonGroup>
-        )}
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{charter?.name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {charter && charter.gender}
-            {/* <span className="title">Aliases: </span>{`${el.aliases}`}
-                    <br></br>
-                    <span className="title">Gender: </span>{`${el.gender}`} */}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>
