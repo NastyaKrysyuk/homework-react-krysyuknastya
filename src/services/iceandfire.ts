@@ -2,14 +2,12 @@ import { Book, Character } from "../types/type";
 
 const path = "https://www.anapioficeandfire.com/api/";
 
-
 //запрос к серверу за данными 
 export async function getData(url: string): Promise<any> {
   const res = await fetch(`${path}${url}`);
   if (!res.ok) new Error(`Could not fetch ${url}` + `, received ${res.status}`)
   return res.json();
 }
-
 
 //запрос с пагинацией page-к какой странице запрос, pageSize-сколько элементов на странице
 export default class IceandfireApi {
