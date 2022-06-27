@@ -2,6 +2,7 @@ import { Character } from "../types/type";
 import React from "react";
 import IceandfireApi, { getData } from "../services/iceandfire";
 import { Button, ButtonGroup, ListGroup, Modal } from "react-bootstrap";
+import Books from "../books";
 
 
 //тип для пропсов любой
@@ -16,6 +17,7 @@ type TState = {
   charter: null | Character;
   show: boolean;
 }
+
 export default class Characters extends React.Component<TProps, TState>{
   state: TState = {
     characters: [],
@@ -78,7 +80,6 @@ export default class Characters extends React.Component<TProps, TState>{
   }
 
   render() {
-
     const { characters, charter, isLoading, isError } = this.state;
     console.log(charter)
     return (
@@ -94,7 +95,7 @@ export default class Characters extends React.Component<TProps, TState>{
               <>
                 <ListGroup.Item as="li" key={el.url} onClick={(_e) => { this.handlerClickCharacter(el.url) }}>
                   <span className="title">{el.name || el.aliases}</span>
-                  <span>Gender: {el.gender}</span>
+                  <span className="prop">Gender: {el.gender}</span>
                 </ListGroup.Item>
               </>
             ))
@@ -118,13 +119,12 @@ export default class Characters extends React.Component<TProps, TState>{
         )}
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>{charter?.name}</Modal.Title>
+            <Modal.Title>{charter?.name || "undefinde"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {charter && charter.gender}
-            {/* <span className="title">Aliases: </span>{`${el.aliases}`}
-                    <br></br>
-                    <span className="title">Gender: </span>{`${el.gender}`} */}
+            <span className="title">Name:</span>{charter?.name || "undefinde"}
+            <span className="prop">Gender:</span>{charter?.gender || "undefinde" }
+            <span className="prop">Aliases:</span>{charter?.aliases || "undefinde"}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>
