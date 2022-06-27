@@ -80,6 +80,9 @@ export default class Characters extends React.Component<TProps, TState>{
   render() {
     const { characters, charter, isLoading, isError } = this.state;
     console.log(charter)
+
+    const { characters, charter, isLoading, isError } = this.state;
+    console.log(charter)
     return (
 
       <div className="characters">
@@ -142,6 +145,45 @@ export default class Characters extends React.Component<TProps, TState>{
               Close
             </Button>
             <Button variant="primary" onClick={this.handleModal(true)}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+              </>
+            ))
+          }
+        </ListGroup>
+        {characters && !isError && (
+          <ButtonGroup className="books-nav" aria-label="Basic example" >
+            <Button
+              variant="secondary"
+              disabled={this.state.page === 1}
+              onClick={(_e: any) => this.handlerPage("left")}
+            >
+              left
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={(_e: any) => this.handlerPage("right")}>
+              right
+            </Button>
+          </ButtonGroup>
+        )}
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{charter?.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {charter && charter.gender}
+            {/* <span className="title">Aliases: </span>{`${el.aliases}`}
+                    <br></br>
+                    <span className="title">Gender: </span>{`${el.gender}`} */}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.handleClose}>
               Save Changes
             </Button>
           </Modal.Footer>
