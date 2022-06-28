@@ -54,7 +54,8 @@ export default class Characters extends React.Component<TProps, TState>{
 
   componentDidUpdate() {
     console.log("componentDidUpdate");
-    if (this.state.characters.length == 0 && this.state.isLoading == false) {
+    // if (this.state.characters.length == 0 && this.state.isLoading == false) {
+    if (this.state.characters.length == 0 && !this.state.isLoading) {
       this.setState({ ...this.state, page: 1 })
       this.getCharcters();
     }
@@ -68,16 +69,13 @@ export default class Characters extends React.Component<TProps, TState>{
       // console.log("Ответ: "+ JSON.parse(JSON.stringify(res)))
         this.setState({ charter: res, isLoading: false })
       })
-    this.handleShow()
+    this.handleModal(true)()
   }
 
-  handleClose = () => {
-    this.setState({ show: false })
+  handleModal = (type: boolean) => () => {
+    this.setState({ show: type })
   }
 
-  handleShow = () => {
-    this.setState({ show: true })
-  }
 
   render() {
     const { characters, charter, isLoading, isError } = this.state;
@@ -117,20 +115,33 @@ export default class Characters extends React.Component<TProps, TState>{
             </Button>
           </ButtonGroup>
         )}
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.state.show} onHide={this.handleModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>{charter?.name || "undefinde"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <span className="title">Name:</span>{charter?.name || "undefinde"}
+            {/*<span className="title">Name:</span>{charter?.name || "undefinde"}*/}
+            {charter?.name && (
+                <>
+                  <span className="title">Name:</span>{charter?.name}
+                </>
+            )}
+
+            {/*{charter?.name && (*/}
+            {/*    <div>*/}
+            {/*      <small>Name:</small>*/}
+            {/*      <span>{charter?.name}</span>*/}
+            {/*    </div>*/}
+            {/*)}*/}
+
             <span className="prop">Gender:</span>{charter?.gender || "undefinde" }
             <span className="prop">Aliases:</span>{charter?.aliases || "undefinde"}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
+            <Button variant="secondary" onClick={this.handleModal(false)}>
               Close
             </Button>
-            <Button variant="primary" onClick={this.handleClose}>
+            <Button variant="primary" onClick={this.handleModal(true)}>
               Save Changes
             </Button>
           </Modal.Footer>
