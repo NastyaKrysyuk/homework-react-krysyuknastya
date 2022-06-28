@@ -64,9 +64,6 @@ export default class Characters extends React.Component<TProps, TState>{
   handlerClickCharacter = (url: string) => {
     IceandfireApi.getCharterInfo(url)
       .then((res: Character) => {
-        console.log("Oтвет типа: ", typeof res)
-        console.log("Ответ: ", res)
-      // console.log("Ответ: "+ JSON.parse(JSON.stringify(res)))
         this.setState({ charter: res, isLoading: false })
       })
     this.handleModal(true)()
@@ -81,7 +78,6 @@ export default class Characters extends React.Component<TProps, TState>{
     const { characters, charter, isLoading, isError } = this.state;
     console.log(charter)
     return (
-
       <div className="characters">
         <ListGroup>
           {isError && "Error"}
@@ -91,7 +87,11 @@ export default class Characters extends React.Component<TProps, TState>{
             !isLoading &&
             characters.map((el: Character) => (
               <>
-                <ListGroup.Item as="li" key={el.url} onClick={(_e) => { this.handlerClickCharacter(el.url) }}>
+                <ListGroup.Item 
+                  as="li" 
+                  key={el.url} 
+                  onClick={(_e) => { this.handlerClickCharacter(el.url) }}
+                >
                   <span className="title">{el.name || el.aliases}</span>
                   <span className="prop">Gender: {el.gender}</span>
                 </ListGroup.Item>
@@ -117,11 +117,11 @@ export default class Characters extends React.Component<TProps, TState>{
         )}
         <Modal show={this.state.show} onHide={this.handleModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>{charter?.name || "undefinde"}</Modal.Title>
+            <Modal.Title>{charter?.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {/*<span className="title">Name:</span>{charter?.name || "undefinde"}*/}
-            {charter?.name && (
+            {charter && (
                 <>
                   <span className="title">Name:</span>{charter?.name}
                 </>
@@ -134,8 +134,8 @@ export default class Characters extends React.Component<TProps, TState>{
             {/*    </div>*/}
             {/*)}*/}
 
-            <span className="prop">Gender:</span>{charter?.gender || "undefinde" }
-            <span className="prop">Aliases:</span>{charter?.aliases || "undefinde"}
+            <span className="prop">Gender:</span>{charter?.gender}
+            <span className="prop">Aliases:</span>{charter?.aliases}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleModal(false)}>
