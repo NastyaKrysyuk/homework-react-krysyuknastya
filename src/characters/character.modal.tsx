@@ -13,7 +13,7 @@ const CharacterModal: FC<Props> = ({ handleModal, modalIsVisible, characterUrl, 
   console.log('props:', characterUrl, modalIsVisible, list);
 
   //КАСТОМНЫЙ ХУК useCharacter
-  const { character } = useCharacter(characterUrl);
+  const { character, loading } = useCharacter(characterUrl);
 
 
   //КАСТОМНЫЙ ХУК ДЛЯ
@@ -27,19 +27,24 @@ const CharacterModal: FC<Props> = ({ handleModal, modalIsVisible, characterUrl, 
         <Modal.Title>{character?.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {character && (
+        {loading && 'loafing'}
+        {!loading && character && (
           <>
-            {character?.name && (
-              <div>
-                <small className="prop" >Name:</small>
-                <span>{character?.name}</span>
-              </div>
+            {character && (
+              <>
+                <div>
+                  <small className="prop" >Name:</small>
+                  <span>{character?.name}</span>
+                </div>
+                <span className="prop">Gender:</span>{character?.gender}
+                <span className="prop">Aliases:</span>{character?.aliases}
+              </>
+              
             )}
           </>
         )}
 
-        <span className="prop">Gender:</span>{character?.gender}
-        <span className="prop">Aliases:</span>{character?.aliases}
+        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleModal(false)}>
