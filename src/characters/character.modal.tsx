@@ -1,7 +1,9 @@
 import React from "react"
 import { FC } from "react"
 import { Button, Modal } from "react-bootstrap"
-import { useCharacter } from "./character.hooks";
+import useFetch from "../hooks/useFetch";
+import IceandfireApi from "../services/iceandfire";
+import { Character } from "../types/type";
 
 type Props = {
   modalIsVisible: boolean,
@@ -13,7 +15,7 @@ const CharacterModal: FC<Props> = ({ handleModal, modalIsVisible, characterUrl, 
   console.log('props:', characterUrl, modalIsVisible, list);
 
   //КАСТОМНЫЙ ХУК useCharacter
-  const { character, loading } = useCharacter(characterUrl);
+  const { data, loading } = useFetch<Character>(IceandfireApi.getCharterInfo, characterUrl);
 
 
   //КАСТОМНЫЙ ХУК ДЛЯ
@@ -24,20 +26,20 @@ const CharacterModal: FC<Props> = ({ handleModal, modalIsVisible, characterUrl, 
   return (
     <Modal show={modalIsVisible} onHide={handleModal(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>{character?.name}</Modal.Title>
+        <Modal.Title>{data?.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {loading && 'loafing'}
-        {!loading && character && (
+        {!loading && data && (
           <>
-            {character && (
+            {data && (
               <>
                 <div>
                   <small className="prop" >Name:</small>
-                  <span>{character?.name}</span>
+                  <span>{data?.name}</span>
                 </div>
-                <span className="prop">Gender:</span>{character?.gender}
-                <span className="prop">Aliases:</span>{character?.aliases}
+                <span className="prop">Gender:</span>{data?.gender}
+                <span className="prop">Aliases:</span>{data?.aliases}
               </>
               
             )}
