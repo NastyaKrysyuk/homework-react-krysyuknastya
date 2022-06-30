@@ -11,22 +11,22 @@ const useCharacter = (url: string | null) => {
 
   const handlerClickCharacter = async () => {
     setLoading(true)
-    try {
-      const res = await IceandfireApi.getCharterInfo(url)
-      setCharacter(res)
-    }
-    catch (e: any) {
-      setError(true);
-      console.log(e.message)
-    }
-    finally {
-      setLoading(false)
-    }
+      try {
+        const res = await IceandfireApi.getCharterInfo(url as string)
+        setCharacter(res)
+      }
+      catch (e: any) {
+        setError(true);
+        console.log(e.message)
+      }
+      finally {
+        setLoading(false)
+      }
   }
 
   useEffect(() => {
     //запрос за героем при каждой смене url
-    handlerClickCharacter();
+    url && handlerClickCharacter();
   }, [url])
 
   return { character, loading, error }
