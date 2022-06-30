@@ -19,16 +19,14 @@ const CharactersF = () => {
   const [modalIsVisible, setModalIsVisible] = useState<boolean>(false)
   const [characterUrl, setCharacterUrl] = useState<string | null>(null)
   
-  console.log('render loading', loading);
+  
   
   // const list: any[] = []
   const list: any[] = useMemo(() => {
-    console.log('useMemo');
-    
     return []
-  }, [characterUrl])
+  }, [])
 
-  console.log('list', list);
+  
   
 
   const handleModal = (type: boolean) => () => {
@@ -102,7 +100,9 @@ const CharactersF = () => {
           list={list}
           characterUrl={characterUrl} 
           modalIsVisible={modalIsVisible} 
-          handleModal={handleModalMemorized} />
+          handleModal={handleModalMemorized} 
+        />
+        
         {/* <Modal show={modalIsVisible} onHide={handleModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>{character?.name}</Modal.Title>

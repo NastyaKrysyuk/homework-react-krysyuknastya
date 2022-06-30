@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { FC, useState } from "react"
 import { Button, Modal } from "react-bootstrap"
 import IceandfireApi from "../services/iceandfire"
@@ -11,7 +11,7 @@ type Props = {
     list: Array<any>
 }
 const CharterModal: FC<Props> = ({handleModal, modalIsVisible, characterUrl, list}) => {
-    console.log('props:', characterUrl, modalIsVisible, list);
+    // console.log('props:', characterUrl, modalIsVisible, list);
     
     const [character, setCharacter] = useState<null | Character>(null)
     const [loadingCharacter, setLoadingCharacter] = useState<boolean>(false)
