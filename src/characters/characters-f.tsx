@@ -1,11 +1,15 @@
 import { Character } from "../types/type";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { Button, ButtonGroup, ListGroup, Modal } from "react-bootstrap";
 import {useCharters} from "./charters.hooks";
 import CharacterModal from "./character.modal";
+import AppContext from "../context/context";
 
 
 const CharactersF = () => {
+  const context = useContext(AppContext)
+  console.log('context', context);
+  
   //КАСТОМНЫЙ ХУК useCharters
   const {error, loading, characters, filter, handlerPage} = useCharters({initPage: 1, initPageSize: 5});
 
@@ -79,6 +83,10 @@ const CharactersF = () => {
           characterUrl={characterUrl} 
           modalIsVisible={modalIsVisible} 
           handleModal={handleModalMemorized} />
+          <Button onClick={(e: any) => {
+            //@ts-ignore
+            context.handler('test 2')
+          }}>Handler!!</Button>
     </div>
   )
 }

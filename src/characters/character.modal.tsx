@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useContext } from "react"
 import { FC } from "react"
 import { Button, Modal } from "react-bootstrap"
+import AppContext from "../context/context";
 import useFetch from "../hooks/useFetch";
 import IceandfireApi from "../services/iceandfire";
 import { Character } from "../types/type";
@@ -12,20 +13,16 @@ type Props = {
   list: Array<any>
 }
 const CharacterModal: FC<Props> = ({ handleModal, modalIsVisible, characterUrl, list }) => {
-  console.log('props:', characterUrl, modalIsVisible, list);
+  console.log('props:', characterUrl);
 
   //КАСТОМНЫЙ ХУК useCharacter
   const { data, loading } = useFetch<Character>(IceandfireApi.getCharterInfo, characterUrl);
 
 
-  //КАСТОМНЫЙ ХУК ДЛЯ
-  // const [character, setCharacter] = useState<null | Character>(null)
-  // const [loadingCharacter, setLoadingCharacter] = useState<boolean>(false)
-  // const [errorCharacter, setErrorCharacter] = useState<boolean>(false)
-
   return (
     <Modal show={modalIsVisible} onHide={handleModal(false)}>
       <Modal.Header closeButton>
+        {/* //@ts-ignore */}
         <Modal.Title>{data?.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>

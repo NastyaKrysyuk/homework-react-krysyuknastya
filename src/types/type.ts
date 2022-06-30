@@ -14,21 +14,21 @@ export type Book = {
 
 export type Character = {
   url: string;
-  name: string;
+  name: string;//+
   culture: string;
-  born: string;
-  died: string;
-  titles: any[];
+  born: string;//+
+  died: string;//+
+  titles: any[];//+
   aliases: string[];
   father: string;
   mother: string;
   spouse: string;
   allegiances: string[];
-  books: string[];
+  books: string[];//+
   povBooks: any[];
   tvSeries: string[];
   playedBy: string[];
-  gender:string
+  gender:string//+
 }
 
 

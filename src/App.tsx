@@ -4,14 +4,21 @@ import Characters from './characters';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CharactersF from './characters/characters-f';
+import MyProvider from './context/provider';
+import FormComponent from './components/form';
 
 
 function App() {
+  
   return (
-    <div className='wrapper'>
-      {/* <Books /> */}
-      <CharactersF />
-    </div >
+    <MyProvider>
+      <div className='wrapper'>
+        {/* <Books /> */}
+        <CharactersF />
+        <FormComponent/>
+      </div >
+    </MyProvider>
+  
   )
 
 }
