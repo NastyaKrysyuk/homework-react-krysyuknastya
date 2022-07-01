@@ -20,7 +20,6 @@ const FormComponent = () => {
     const [state, setState] = useState<TState>(initState)
     const [modalIsVisible, setModalIsVisible] = useState<boolean>(false)
 
-    let book: string;
 
     const handleModal = (type: boolean) => () => {
         setModalIsVisible(type)
@@ -54,18 +53,19 @@ const FormComponent = () => {
                         <input
                             type="text"
                             placeholder="books"
-                            value={state.books[i + 1]}
+                            value={state.books[i]}
                             name={'books' + i}
                             onChange={(e) => {
-                                book = e.target.value;
-                                return book
+                                const booksFromState = state.books;
+                                booksFromState[i] = e.target.value;
+                                setState({...state, books: booksFromState})
                             }}
                         />
                     </div>
                 ))}
                 <Button onClick={(e: any) => {
                     const books: string[] = state.books;
-                    books.push(book)
+                    books.push('')
                     setState({ ...state, books: books })
                 }}>add book</Button>
 
@@ -80,7 +80,7 @@ const FormComponent = () => {
                     <>
                         <span className="prop">Name:</span>{state.name}
                         <span className="prop">Born:</span>{state.born}
-                        <span className="prop">Books:</span>{state.books.filter(el => el).join(', ')}
+                        <span className="prop">Books:</span>{state.books.join(', ')}
                     </>
                 </Modal.Body>
                 <Modal.Footer>
