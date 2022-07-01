@@ -1,2 +1,2 @@
-import FormComponent from "./form";
+import FormComponent from './form';
 export default FormComponent;
