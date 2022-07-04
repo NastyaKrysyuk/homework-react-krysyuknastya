@@ -1,10 +1,15 @@
 import { useState } from "react"
-import { Button, Form, Modal } from "react-bootstrap"
+import { Button, Form } from "react-bootstrap"
+import Input from '../input'
+import ModalComponent from '../modal'
 
 //тип стейта
 type TState = {
     name: string,
     born: string,
+    died: string,
+    gender: string,
+    titles: string[] | [],
     books: string[] | []
 }
 
@@ -12,7 +17,10 @@ type TState = {
 const initState: TState = {
     name: '',
     born: '',
-    books: ['']
+    died: '',
+    books: [''],
+    gender: '',
+    titles: [''],
 }
 
 const FormComponent = () => {
@@ -20,9 +28,27 @@ const FormComponent = () => {
     const [state, setState] = useState<TState>(initState)
     const [modalIsVisible, setModalIsVisible] = useState<boolean>(false)
 
-
     const handleModal = (type: boolean) => () => {
         setModalIsVisible(type)
+    }
+
+    const handlerOnChange = (nameProp: keyof TState, i?: number) => (e: any) => {
+        if (i) {
+            console.log(i)
+            const booksFromState: string[] | string = state[nameProp];
+            if (typeof booksFromState == "object") {
+                booksFromState[i] = e.target.value;
+                setState({ ...state, [nameProp]: booksFromState })
+            }
+        } else setState({ ...state, [nameProp]: e.target.value })
+    }
+
+    const handlerOnClick = (nameProp: keyof TState) => (e: any) => {
+        const titles: string[] | string = state[nameProp];
+        if (typeof titles == "object") {
+            titles.push('')
+            setState({ ...state, [nameProp]: titles })
+        }
     }
 
     return (
@@ -30,68 +56,57 @@ const FormComponent = () => {
             <Form onSubmit={(e: any) => {
                 e.preventDefault()
             }}>
-                <input
-                    type="text"
-                    placeholder="name"
-                    value={state.name}
-                    name={'name'}
-                    onChange={(e) => {
-                        setState({ ...state, name: e.target.value })
-                    }}
-                />
-                <input
-                    type="date"
-                    placeholder="born"
-                    value={state.born}
-                    name={'born'}
-                    onChange={(e) => {
-                        setState({ ...state, born: e.target.value })
-                    }}
-                />
-                {state.books.map((el, i) => (
-                    <div key={i}>
-                        <input
-                            type="text"
-                            placeholder="books"
-                            value={state.books[i]}
-                            name={'books' + i}
-                            onChange={(e) => {
+                <div className="wrapper">
+                    <Input type="text" placeholder="name" value={state.name} name={'name'} onChange={handlerOnChange('name')} />
+                    <Input type="date" placeholder="died" value={state.died} name={'died'} onChange={handlerOnChange('died')} />
+                    <Input type="text" placeholder="gender" value={state.gender} name={'gender'} onChange={handlerOnChange('gender')} />
+                    <Input type="date" placeholder="born" value={state.born} name={'born'} onChange={handlerOnChange('born')} />
+                </div>
+
+                <div className="wrapper">
+                    {state.books.map((el, i) => (
+                        <div key={i}>
+                            {/* <Input type="text" placeholder="books" value={state.books[i]} name={`book ${i + 1}`} onChange={handlerOnChange('books',i)} /> */}
+                            <Input type="text" placeholder="books" value={state.books[i]} name={`book ${i + 1}`} onChange={(e: any) => {
+                                //вынести
                                 const booksFromState = state.books;
                                 booksFromState[i] = e.target.value;
-                                setState({...state, books: booksFromState})
-                            }}
-                        />
-                    </div>
-                ))}
-                <Button onClick={(e: any) => {
-                    const books: string[] = state.books;
-                    books.push('')
-                    setState({ ...state, books: books })
-                }}>add book</Button>
+                                setState({ ...state, books: booksFromState })
+                            }} />
+                        </div>
+                    ))}
+                </div>
+                <div className="wrapper">
+                    {state.titles.map((el, i) => (
+                        <div key={i}>
+                            {/* <Input type="text" placeholder="titles" value={state.titles[i]} name={`title ${i + 1}`} onChange={handlerOnChange('titles',i)} /> */}
+                            <Input type="text" placeholder="titles" value={state.titles[i]} name={`title ${i + 1}`} onChange={(e: any) => {
+                                //вынести
+                                const titlesFromState = state.titles;
+                                titlesFromState[i] = e.target.value;
+                                setState({ ...state, titles: titlesFromState })
+                            }} />
+                        </div>
+                    ))}
+                </div>
+
+                <Button onClick={handlerOnClick('titles')}>Add title</Button>
+
+                <Button onClick={handlerOnClick('books')}>Add book</Button>
 
                 <Button type={'submit'} onClick={handleModal(true)}>submit</Button>
             </Form>
-
-            <Modal show={modalIsVisible} onHide={handleModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{state.name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <>
-                        <span className="prop">Name:</span>{state.name}
-                        <span className="prop">Born:</span>{state.born}
-                        <span className="prop">Books:</span>{state.books.join(', ')}
-                    </>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleModal(true)}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <ModalComponent
+                show={modalIsVisible}
+                onHide={handleModal}
+                name={state.name}
+                born={state.born}
+                gender={state.gender}
+                died={state.died}
+                books={state.books}
+                titles={state.titles}
+                onClick={handleModal}
+            />
         </div>
     )
 }
