@@ -8,7 +8,7 @@ type TState = {
     name: string,
     born: string,
     died: string,
-    gender: string,
+    gender: 'Male' | 'Female',
     titles: string[] | [],
     books: string[] | []
 }
@@ -19,7 +19,7 @@ const initState: TState = {
     born: '',
     died: '',
     books: [''],
-    gender: '',
+    gender: "Male",
     titles: [''],
 }
 
@@ -33,7 +33,7 @@ const FormComponent = () => {
     }
 
     const handlerOnChange = (nameProp: keyof TState, i?: number) => (e: any) => {
-        if (i === 'number') {
+        if (typeof i === 'number') {
             const booksFromState: string[] | string = state[nameProp];
             if (typeof booksFromState == "object") {
                 booksFromState[i] = e.target.value;
@@ -58,21 +58,45 @@ const FormComponent = () => {
                 <div className="wrapper">
                     <Input type="text" placeholder="name" value={state.name} name={'name'} onChange={handlerOnChange('name')} />
                     <Input type="date" placeholder="died" value={state.died} name={'died'} onChange={handlerOnChange('died')} />
-                    <Input type="text" placeholder="gender" value={state.gender} name={'gender'} onChange={handlerOnChange('gender')} />
                     <Input type="date" placeholder="born" value={state.born} name={'born'} onChange={handlerOnChange('born')} />
+                    <Input type="text" placeholder="gender" value={state.gender} name={'gender'} onChange={handlerOnChange('gender')} />
+            
+                </div>
+
+                <div className="wrappen">
+                    <Input 
+                        type="checkbox" 
+                        placeholder="Male" 
+                        value={state.gender} 
+                        name={'gender1'} 
+                        onChange={(_e: any) => {
+                            setState({...state, gender: state.gender === 'Male' ? 'Female' : 'Male'})
+                        }} />
                 </div>
 
                 <div className="wrapper">
                     {state.books.map((el, i) => (
                         <div key={i}>
-                            <Input type="text" placeholder="books" value={state.books[i]} name={`book ${i + 1}`} onChange={handlerOnChange('books',i)} />
+                            <Input 
+                                type="text" 
+                                placeholder="books" 
+                                value={state.books[i]} 
+                                name={`book ${i + 1}`} 
+                                onChange={handlerOnChange('books',i)} 
+                            />
                         </div>
                     ))}
                 </div>
                 <div className="wrapper">
                     {state.titles.map((el, i) => (
                         <div key={i}>
-                            <Input type="text" placeholder="titles" value={state.titles[i]} name={`title ${i + 1}`} onChange={handlerOnChange('titles',i)} /> 
+                            <Input 
+                                type="text"
+                                placeholder="titles" 
+                                value={state.titles[i]} 
+                                name={`title ${i + 1}`} 
+                                onChange={handlerOnChange('titles',i)} 
+                            /> 
                         </div>
                     ))}
                 </div>
