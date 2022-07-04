@@ -33,8 +33,7 @@ const FormComponent = () => {
     }
 
     const handlerOnChange = (nameProp: keyof TState, i?: number) => (e: any) => {
-        if (i) {
-            console.log(i)
+        if (i === 'number') {
             const booksFromState: string[] | string = state[nameProp];
             if (typeof booksFromState == "object") {
                 booksFromState[i] = e.target.value;
@@ -66,26 +65,14 @@ const FormComponent = () => {
                 <div className="wrapper">
                     {state.books.map((el, i) => (
                         <div key={i}>
-                            {/* <Input type="text" placeholder="books" value={state.books[i]} name={`book ${i + 1}`} onChange={handlerOnChange('books',i)} /> */}
-                            <Input type="text" placeholder="books" value={state.books[i]} name={`book ${i + 1}`} onChange={(e: any) => {
-                                //вынести
-                                const booksFromState = state.books;
-                                booksFromState[i] = e.target.value;
-                                setState({ ...state, books: booksFromState })
-                            }} />
+                            <Input type="text" placeholder="books" value={state.books[i]} name={`book ${i + 1}`} onChange={handlerOnChange('books',i)} />
                         </div>
                     ))}
                 </div>
                 <div className="wrapper">
                     {state.titles.map((el, i) => (
                         <div key={i}>
-                            {/* <Input type="text" placeholder="titles" value={state.titles[i]} name={`title ${i + 1}`} onChange={handlerOnChange('titles',i)} /> */}
-                            <Input type="text" placeholder="titles" value={state.titles[i]} name={`title ${i + 1}`} onChange={(e: any) => {
-                                //вынести
-                                const titlesFromState = state.titles;
-                                titlesFromState[i] = e.target.value;
-                                setState({ ...state, titles: titlesFromState })
-                            }} />
+                            <Input type="text" placeholder="titles" value={state.titles[i]} name={`title ${i + 1}`} onChange={handlerOnChange('titles',i)} /> 
                         </div>
                     ))}
                 </div>
